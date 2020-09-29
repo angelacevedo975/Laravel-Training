@@ -26,3 +26,7 @@ Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
 
 Route::get('login/facebook', [LoginController::class, 'redirectToProvider']);
 Route::get('login/facebook/callback', [LoginController::class, 'handleProviderCallback']);
+
+
+Route::get('login/google', [LoginController::class, 'redirectToProvider_google']);
+Route::get('login/google/callback', [LoginController::class, 'handleProviderCallback_google']);
