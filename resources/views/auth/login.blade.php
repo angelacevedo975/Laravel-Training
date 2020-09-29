@@ -44,5 +44,11 @@
                 </x-jet-button>
             </div>
         </form>
+        <x-jet-button class="mt-4" onclick="window.location.href='/login/facebook'">
+                    Login with facebook
+        </x-jet-button>
+        <x-jet-button class="mt-4" onclick="window.location.href='/login/facebook'">
+                    Login with Google
+        </x-jet-button>
     </x-jet-authentication-card>
 </x-guest-layout>
