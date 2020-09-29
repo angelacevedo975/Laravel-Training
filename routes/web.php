@@ -14,7 +14,8 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('home');
+    $mytime = Carbon\Carbon::now();
+    return view('home',["date"=>$mytime->toDateTimeString()]);
     
 });
 
