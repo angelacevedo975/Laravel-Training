@@ -2,6 +2,8 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\BasicController;
+use App\Http\Controllers\RestController;
 
 /*
 |--------------------------------------------------------------------------
@@ -29,3 +31,12 @@ Route::prefix('login')->group(function () {
     Route::get('{social}', [LoginController::class, 'redirectToProvider'])->middleware('socialite');
     Route::get('{social}/callback', [LoginController::class, 'handleProviderCallback']);
 });
+
+Route::prefix("user")->group(function(){
+    Route::get("age/{age?}", [BasicController::class, "getUserAge"])->middleware("verifyAge");
+    Route::get("name/{name}", [BasicController::class, "getUserName"]);
+});
+
+Route::resource('phrases', RestController::class)->only([
+    'index', 'show'
+]);;
