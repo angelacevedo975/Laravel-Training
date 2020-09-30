@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\LoginController;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,10 +15,17 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('home');
+    $mytime = Carbon\Carbon::now();
+    return view('home',["date"=>$mytime->toDateTimeString()]);
     
 });
 
 Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
     return view('dashboard');
 })->name('dashboard');
+
+
+Route::prefix('login')->group(function () {
+    Route::get('{social}', [LoginController::class, 'redirectToProvider'])->middleware('socialite');
+    Route::get('{social}/callback', [LoginController::class, 'handleProviderCallback']);
+});
