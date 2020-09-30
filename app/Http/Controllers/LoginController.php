@@ -10,14 +10,16 @@ use Illuminate\Support\Facades\Auth;
 class LoginController extends Controller
 {
     
-    public function redirectToProvider()
+    public function redirectToProvider(Request $request)
     {
-        return Socialite::driver('facebook')->redirect();
+        $provider= $request->social;
+        return Socialite::driver( $provider )->redirect();
     }
 
-    public function handleProviderCallback()
+    public function handleProviderCallback(Request $request)
     {
-        $user = Socialite::driver('facebook')->user();
+        $provider= $request->social;
+        $user = Socialite::driver($provider)->user();
         $finduser = User::where('email', $user->email)->first();
         if($finduser){
             //if the user exists, login and show dashboard
@@ -28,38 +30,7 @@ class LoginController extends Controller
             $newUser = User::create([
                 'name' => $user->name,
                 'email' => $user->email,
-                'facebook_id'=> $user->id,
-                'password' => encrypt('')
-            ]);
-            //login as the new user
-            Auth::login($newUser);
-            // go to the dashboard
-            return redirect('/dashboard');
-        }
-    }
-
-
-
-
-    public function redirectToProvider_google()
-    {
-        return Socialite::driver('google')->redirect();
-    }
-
-    public function handleProviderCallback_google()
-    {
-        $user = Socialite::driver('google')->user();
-        $finduser = User::where('email', $user->email)->first();
-        if($finduser){
-            //if the user exists, login and show dashboard
-            Auth::login($finduser);
-            return redirect('/dashboard');
-        }else{
-            //user is not yet created, so create first
-            $newUser = User::create([
-                'name' => $user->name,
-                'email' => $user->email,
-                'google_id'=> $user->id,
+                $provider."_id"=> $user->id,
                 'password' => encrypt('')
             ]);
             //login as the new user
